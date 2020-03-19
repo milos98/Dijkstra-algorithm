@@ -1,3 +1,18 @@
+/*var listOfPoints = [new Point("A", [0,3,4,7,0,0,0,0]),
+                    new Point("B", [3,0,1,0,5,0,0,0]),
+                    new Point("C", [4,1,0,2,6,0,0,0]),
+                    new Point("D", [7,0,2,0,0,3,6,0]),
+                    new Point("E", [0,5,6,0,0,1,0,8]),
+                    new Point("F", [0,0,0,3,1,0,3,4]),
+                    new Point("G", [0,0,0,6,0,3,0,2]),
+                    new Point("H", [0,0,0,0,8,4,2,0])];*/
+
+/*var listOfPoints = [new Point("A", [0,4,1,0,0]),
+                    new Point("B", [4,0,2,1,0]),
+                    new Point("C", [1,2,0,5,0]),
+                    new Point("D", [0,1,5,0,3]),
+                    new Point("E", [0,0,0,3,0])];*/
+
 var listOfPoints = [];
 var checked = [];
 var tempNeigh;
