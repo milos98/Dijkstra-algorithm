@@ -10,7 +10,15 @@ function Point(name, neighbours){
     this.totalWeight;
 }
 
-function input(){}
+function input(){
+    let numberOfPoints = prompt("How many points for input?");
+
+    while(numberOfPoints-- > 0){
+        let name = prompt("Name of point:");
+        listOfPoints.push(new Point(name));
+        checked.push(0);
+    }
+}
 
 function neighboursInput(){}
 
