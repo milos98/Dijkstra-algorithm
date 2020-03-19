@@ -20,7 +20,22 @@ function input(){
     }
 }
 
-function neighboursInput(){}
+function neighboursInput(){
+    for(let i = 0; i < listOfPoints.length; i++){
+        listOfPoints[i].neighbours[i] = 0;
+        for(let j = (i + 1); j < listOfPoints.length; j++){
+            listOfPoints[i].path[j] = 0;
+            let weight = 0;
+            while(weight < 1)
+                weight = prompt("Weight " + listOfPoints[i].name + "-" + listOfPoints[j].name + " " + i + "-" + j);
+            if(weight > 0)
+                listOfPoints[i].neighbours[j] = listOfPoints[j].neighbours[i] = weight;
+            else
+                listOfPoints[i].neighbours[j] = listOfPoints[j].neighbours[i] = 0;
+            
+        }
+    }
+}
 
 function dijkstra(sbPoint){}
 
