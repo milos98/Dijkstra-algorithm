@@ -86,6 +86,8 @@ function dijkstra(sbPoint, checked, notVisitedNeighbours){
     //certain conditions are satisfied
     for(let i = 0; i < current.neighbours.length; i++){
         neighbour = [...current.neighbours[i]];
+        indexOfNeighbour =neighbour[0];
+        distanceOfNeighbour = neighbour[1];
         //console.log(neighbour[0], current.name)
 
         //skipping points which are 
@@ -93,9 +95,9 @@ function dijkstra(sbPoint, checked, notVisitedNeighbours){
         if(checked[neighbour[0]]) continue;
         
         //only for non visited neighbours on current path
-        if(neighbour[1]>0){
+        if(distanceOfNeighbour>0){
             let next = listOfPoints[neighbour[0]]; //defining next point (one of neighbours)
-            let nextPotentialNewWeight = current.totalWeight + neighbour[1]; //defining potential distance(weight) of next point (one of neighbours)
+            let nextPotentialNewWeight = current.totalWeight + distanceOfNeighbour; //defining potential distance(weight) of next point (one of neighbours)
             checked[neighbour[0]] = 1;
 
             //console.log(next.name);
