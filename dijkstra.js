@@ -1,20 +1,21 @@
 //A-B-E-F-H     : 13
 //A-B-C-D-F-H   : 13
-/*var listOfPoints = [new Point("A", [0,3,4,7,0,0,0,0]),
-                    new Point("B", [3,0,1,0,5,0,0,0]),
-                    new Point("C", [4,1,0,2,6,0,0,0]),
-                    new Point("D", [7,0,2,0,0,3,6,0]),
-                    new Point("E", [0,5,6,0,0,1,0,8]),
-                    new Point("F", [0,0,0,3,1,0,3,4]),
-                    new Point("G", [0,0,0,6,0,3,0,2]),
-                    new Point("H", [0,0,0,0,8,4,2,0])];*/
+//A-C-D-F-H     : 13
+/*var listOfPoints = [new Point("A", [[1,3],[2,4],[3,7]]),
+                    new Point("B", [[0,3],[2,1],[4,5]]),
+                    new Point("C", [[0,4],[1,1],[3,2],[4,6]]),
+                    new Point("D", [[0,7],[2,2],[5,3],[6,6]]),
+                    new Point("E", [[1,5],[2,6],[5,1],[7,8]]),
+                    new Point("F", [[3,3],[4,1],[6,3],[7,4]]),
+                    new Point("G", [[3,6],[5,3],[7,2]]),
+                    new Point("H", [[4,8],[5,4],[6,2]])];*/
 
 //A-C-B-D-E     : 7
-/*var listOfPoints = [new Point("A", [0,4,1,0,0]),
-                    new Point("B", [4,0,2,1,0]),
-                    new Point("C", [1,2,0,5,0]),
-                    new Point("D", [0,1,5,0,3]),
-                    new Point("E", [0,0,0,3,0])];*/
+/*var listOfPoints = [new Point("A", [[1,4],[2,1]]),
+                    new Point("B", [[0,4],[2,2],[3,1]]),
+                    new Point("C", [[0,1],[1,2],[3,5]]),
+                    new Point("D", [[1,1],[2,5],[4,3]]),
+                    new Point("E", [[3,3]])];*/
 
 var listOfPoints = []; //list of objects(Points)
 var checked = []; //array for saving which points are checked on current path
@@ -25,10 +26,10 @@ var notVisitedNeighbours = []; //array for saving weights of neighbour points wh
 //for testing add neighbours parameter into 
 //constructon after name and insted [] at 
 //neighbours put [...neighbours]
-function Point(name, neighbours){ 
+function Point(name){ 
     this.name = name; //name of Point
     this.path = []; //previous points on shortest path  
-    this.neighbours = [...neighbours]; //list of points that is connected to current point [index_of_neighbour_point_in_listOfPoints, distance(weight)_from_current_point]
+    this.neighbours = []; //list of points that is connected to current point [index_of_neighbour_point_in_listOfPoints, distance(weight)_from_current_point]
     this.totalWeight; //Distance(weight) of the shortest path
 }
 
