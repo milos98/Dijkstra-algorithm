@@ -76,7 +76,7 @@ function dijkstra(sbPoint, checked, notVisitedNeighbours){
     let current = listOfPoints[sbPoint]; //defining current point
     current.totalWeight = (typeof(current.totalWeight) == 'undefined') ? 0 : current.totalWeight;
     checked[sbPoint] = 1;
-    checked_backup = [...checked];
+    checked_backup = [...checked]; //saving current value of array, bc in next loop changing its values
 
     //console.log(current.name + " - " + current.neighbours + " - " + current.totalWeight);
 
@@ -85,20 +85,19 @@ function dijkstra(sbPoint, checked, notVisitedNeighbours){
     //that points and eventually paths if
     //certain conditions are satisfied
     for(let i = 0; i < current.neighbours.length; i++){
-        neighbour = [...current.neighbours[i]];
-        indexOfNeighbour =neighbour[0];
-        distanceOfNeighbour = neighbour[1];
-        //console.log(neighbour[0], current.name)
+        indexOfNeighbour = current.neighbours[i][0];
+        distanceOfNeighbour = current.neighbours[i][1];
+        //console.log(indexOfNeighbour, current.name)
 
         //skipping points which are 
         //visited on current path
-        if(checked[neighbour[0]]) continue;
+        if(checked[indexOfNeighbour]) continue;
         
         //only for non visited neighbours on current path
         if(distanceOfNeighbour>0){
-            let next = listOfPoints[neighbour[0]]; //defining next point (one of neighbours)
+            let next = listOfPoints[indexOfNeighbour]; //defining next point (one of neighbours)
             let nextPotentialNewWeight = current.totalWeight + distanceOfNeighbour; //defining potential distance(weight) of next point (one of neighbours)
-            checked[neighbour[0]] = 1;
+            checked[indexOfNeighbour] = 1;
 
             //console.log(next.name);
             //console.log(typeof(next.totalWeight) == 'undefined' || next.totalWeight >= notVisitedNeighbours[i]);
@@ -108,7 +107,7 @@ function dijkstra(sbPoint, checked, notVisitedNeighbours){
             //larger distance(weight) then current path
             if(typeof(next.totalWeight) == 'undefined' || next.totalWeight >= nextPotentialNewWeight){
                 next.totalWeight = nextPotentialNewWeight; //setting new distance(weight) for neighbour
-                notVisitedNeighbours.push(neighbour[0]);
+                notVisitedNeighbours.push(indexOfNeighbour);
                 
                 //adding the first point
                 //to the path
@@ -127,7 +126,7 @@ function dijkstra(sbPoint, checked, notVisitedNeighbours){
         } 
     }
 
-    checked = [...checked_backup];
+    checked = [...checked_backup]; //recovering value of array before loop
     
     //recursively calling the function for
     //every non visited neighbour
