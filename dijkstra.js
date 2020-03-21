@@ -74,7 +74,7 @@ function neighboursInput(){
     }
 }
 
-function dijkstra(sbPoint){
+function dijkstra(sbPoint, checked, notVisitedNeighbours){
     
     let current = listOfPoints[sbPoint]; //defining current point
     
@@ -132,37 +132,13 @@ function dijkstra(sbPoint){
     
     checked[sbPoint] = 1;
     
-    //recursively going through all points
-    //and trying every possible combination
-    //of points in order to find shortest path
-    //between 'strart' and 'finish' point
-    for (let i = 0; i < current.neighbours.length; i++) {
-        
-        //checking the point if it is
-        //non visited neighbour on the 
-        //current path or not
-        if(tempNeigh[i]){
-            
-            //adding arrays checked&tempNeigh to sync array
-            //to avoid losing progress on the way
-            sync.push([...tempNeigh]);
-            sync.push([...checked]);
 
-            //console.log(sync + " PRE")
-
-            dijkstra(i);//recursive call of the function
-
-            //console.log(sync + " POSLE")
-
-            //restoring the last known state of arrays
-            //checked&tempNeigh and removing it from
-            //sync array 
-            checked = [...sync[sync.length-1]];
-            sync.pop();
-            tempNeigh = [...sync[sync.length-1]];
-            sync.pop();
-        }
-    }
+    //recursively calling the function for
+    //every non visited neighbour
+    notVisitedNeighbours.forEach( neighbour => {
+        if(!checked[neighbour]) 
+            dijkstra(neighbour, [...checked], [...notVisitedNeighbours]);
+    })
     
 }
 
@@ -170,7 +146,7 @@ function main(){
     
     input(); //call of the input function
     neighboursInput(); //call of the neighboursInput function
-    dijkstra(0); //call of the dijkstra function
+    dijkstra(0, [], []); //call of the dijkstra function
     
     //output with the shortest path and it's distance(weight)
     console.log((listOfPoints[listOfPoints.length-1].path.toString()).replace(/,/g, "-") + " : " + listOfPoints[listOfPoints.length-1].totalWeight);
