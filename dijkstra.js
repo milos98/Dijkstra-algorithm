@@ -18,18 +18,17 @@
 
 var listOfPoints = []; //list of objects(Points)
 var checked = []; //array for saving which points are checked on current path
-var tempNeigh = []; //array for saving weights of neighbour points which are not checked on current path
-var sync = []; //array for syncing state of variables checked and tempNeigh
+var notVisitedNeighbours = []; //array for saving weights of neighbour points which are not checked on current path
 
 
 //declaration of javascript object Point
 //for testing add neighbours parameter into 
 //constructon after name and insted [] at 
 //neighbours put [...neighbours]
-function Point(name){ 
+function Point(name, neighbours){ 
     this.name = name; //name of Point
     this.path = []; //previous points on shortest path  
-    this.neighbours = []; //list of points that is connected to current point
+    this.neighbours = [...neighbours]; //list of points that is connected to current point [index_of_neighbour_point_in_listOfPoints, distance(weight)_from_current_point]
     this.totalWeight; //Distance(weight) of the shortest path
 }
 
@@ -47,11 +46,6 @@ function input(){
 
 function neighboursInput(){
 
-    //inicializating list of neighbours
-    listOfPoints.forEach(point => {
-        for (let i = 0; i < listOfPoints.length; i++) point.neighbours.push(0);
-    });
-
     //loop for iterating through points
     for(let i = 0; i < listOfPoints.length; i++){
         
@@ -68,8 +62,10 @@ function neighboursInput(){
             while(weight < 0){
                 weight = prompt("Weight " + listOfPoints[i].name + "-" + listOfPoints[j].name + " " + i + "-" + j);
             }
-            if(weight > 0)
-                listOfPoints[i].neighbours[j] = listOfPoints[j].neighbours[i] = parseInt(weight);
+            if(weight > 0){
+                listOfPoints[i].neighbours.push([j,parseInt(weight)]);
+                listOfPoints[j].neighbours.push([i,parseInt(weight)]);
+            }
         }
     }
 }
@@ -77,41 +73,39 @@ function neighboursInput(){
 function dijkstra(sbPoint, checked, notVisitedNeighbours){
     
     let current = listOfPoints[sbPoint]; //defining current point
-    
-    //console.log(current.name + " - " + current.neighbours + " - " + current.totalWeight);
-    
-    tempNeigh = [...current.neighbours];
+    current.totalWeight = (typeof(current.totalWeight) == 'undefined') ? 0 : current.totalWeight;
+    checked[sbPoint] = 1;
+    checked_backup = [...checked];
 
-    //if the current point is the last(finish) point
-    //the break from recursion
-    if((sbPoint == listOfPoints.length-1)) return;
+    //console.log(current.name + " - " + current.neighbours + " - " + current.totalWeight);
 
     //iterating through all neighbour points
     //and calculating distances(weights) for
     //that points and eventually paths if
     //certain conditions are satisfied
-    for (let i = 0; i < current.neighbours.length; i++){
-        
-        //setting 0 in array with weights non visited 
-        //neighbours on current path for every point 
-        //that is visited
-        if(checked[i]) 
-            tempNeigh[i] = 0;
+    for(let i = 0; i < current.neighbours.length; i++){
+        neighbour = [...current.neighbours[i]];
+        //console.log(neighbour[0], current.name)
+
+        //skipping points which are 
+        //visited on current path
+        if(checked[neighbour[0]]) continue;
         
         //only for non visited neighbours on current path
-        if(tempNeigh[i] != 0){
-            let next = listOfPoints[i]; //defining next point (one of neighbours)
-            current.totalWeight = (typeof(current.totalWeight) == 'undefined') ? 0 : current.totalWeight;
-            tempNeigh[i] += current.totalWeight; //adding distance(weight) of the current point to the distance(weight) of the next point
-            
+        if(neighbour[1]>0){
+            let next = listOfPoints[neighbour[0]]; //defining next point (one of neighbours)
+            let nextPotentialNewWeight = current.totalWeight + neighbour[1]; //defining potential distance(weight) of next point (one of neighbours)
+            checked[neighbour[0]] = 1;
+
             //console.log(next.name);
-            //console.log(typeof(next.totalWeight) == 'undefined' || next.totalWeight >= tempNeigh[i]);
+            //console.log(typeof(next.totalWeight) == 'undefined' || next.totalWeight >= notVisitedNeighbours[i]);
             
             //only for neighbour points which doesn have
             //defined distance(weight) yet or which have
             //larger distance(weight) then current path
-            if(typeof(next.totalWeight) == 'undefined' || next.totalWeight >= tempNeigh[i]){
-                next.totalWeight = tempNeigh[i]; //setting new distance(weight) for neighbour
+            if(typeof(next.totalWeight) == 'undefined' || next.totalWeight >= nextPotentialNewWeight){
+                next.totalWeight = nextPotentialNewWeight; //setting new distance(weight) for neighbour
+                notVisitedNeighbours.push(neighbour[0]);
                 
                 //adding the first point
                 //to the path
@@ -129,10 +123,9 @@ function dijkstra(sbPoint, checked, notVisitedNeighbours){
             }
         } 
     }
-    
-    checked[sbPoint] = 1;
-    
 
+    checked = [...checked_backup];
+    
     //recursively calling the function for
     //every non visited neighbour
     notVisitedNeighbours.forEach( neighbour => {
